@@ -1,0 +1,1 @@
+Polya Club puzzles
