@@ -19,8 +19,10 @@ input
            (cons '(0) (iter (cdr ints) size)))
           ; main check
           ((is-valid-block? (take-up-to size ints))
-           (cons
+           (list
              (take-up-to size ints)
+             (iter (drop-up-to size ints) 3)
+             (iter (drop-up-to size ints) 3)
              (iter (drop-up-to size ints) 3)))
           (else (iter ints (- size 1)))))
   (iter input 3))
