@@ -9,23 +9,31 @@ input
     (and (>= block 0) (<= block 255))))
 
 (define (try input)
-  (define (iter ints size)
+  (define (iter ints size blocks valid?)
           ; null check
-    (cond ((null? ints) '())
+    (cond ((not valid?) #f)
+          ((and (null? ints) (= blocks 4))
+           #t)
+          ((and (not (null? ints)) (= blocks 4))
+           #f)
           ; null check
           ((= 0 size) '())
           ; start with 0 check
           ((= 0 (car ints))
-           (cons '(0) (iter (cdr ints) size)))
+           (list '(0) (iter (cdr ints) size (+ blocks 1) valid?)))
           ; main check
           ((is-valid-block? (take-up-to size ints))
            (list
              (take-up-to size ints)
-             (iter (drop-up-to size ints) 3)
-             (iter (drop-up-to size ints) 3)
-             (iter (drop-up-to size ints) 3)))
-          (else (iter ints (- size 1)))))
-  (iter input 3))
+             (list
+               (iter (drop-up-to size ints) 3 (+ blocks 1) valid?)
+               (iter (drop-up-to size ints) 2 (+ blocks 1) valid?)
+               (iter (drop-up-to size ints) 1 (+ blocks 1) valid?))))
+          (else (iter ints (- size 1) blocks valid?))))
+  (list
+    (iter input 3 0 #t)
+    (iter input 2 0 #t)
+    (iter input 1 0 #t)))
 
 (define input-0 '(9 8 7 6 5 4 3 2 1 9 9 9))
 (define input-1 '(1 9 2 1 6 8 0 1))
