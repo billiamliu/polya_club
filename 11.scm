@@ -3,6 +3,7 @@
 (define input-2 '(3 2 1))
 (define input-3 '(1 2 3))
 (define input-4 '(1 5 1 5))
+(define input-4 '(1 6 7 9 5 6 1 4 1 2 4 1 2 4 5 1 5 1 1 1 1 1 1))
 
 (define (try input)
   (let ((j-coord (- (length input) 1)))

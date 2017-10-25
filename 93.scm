@@ -12,40 +12,36 @@ input
   (define (iter ints size blocks valid?)
           ; null check
     (cond ((not valid?) #f)
-          ((and (null? ints) (= blocks 4))
-           #t)
-          ((and (not (null? ints)) (= blocks 4))
-           #f)
-          ; null check
           ((= 0 size) '())
+
+          ; rule check
+          ((and (null? ints) (= blocks 4)) #t)
+          ((and (not (null? ints)) (= blocks 4)) #f)
+
+          ; size check
+          ((< (length ints) size) #f)
+
           ; start with 0 check
           ((= 0 (car ints))
-           (list '(0) (iter (cdr ints) size (+ blocks 1) valid?)))
+           (list '(0)
+                 (iter (cdr ints) 3 (+ blocks 1) valid?)
+                 (iter (cdr ints) 2 (+ blocks 1) valid?)
+                 (iter (cdr ints) 1 (+ blocks 1) valid?)))
+
           ; main check
-          ((is-valid-block? (take-up-to size ints))
+          ((is-valid-block? (take ints size))
            (list
-             (take-up-to size ints)
+             (take ints size)
              (list
-               (iter (drop-up-to size ints) 3 (+ blocks 1) valid?)
-               (iter (drop-up-to size ints) 2 (+ blocks 1) valid?)
-               (iter (drop-up-to size ints) 1 (+ blocks 1) valid?))))
-          (else (iter ints (- size 1) blocks valid?))))
+               (iter (drop ints size) 3 (+ blocks 1) valid?)
+               (iter (drop ints size) 2 (+ blocks 1) valid?)
+               (iter (drop ints size) 1 (+ blocks 1) valid?))))
+
+          (else #f)))
   (list
     (iter input 3 0 #t)
     (iter input 2 0 #t)
     (iter input 1 0 #t)))
 
-(define input-0 '(9 8 7 6 5 4 3 2 1 9 9 9))
-(define input-1 '(1 9 2 1 6 8 0 1))
-(define input-2 '(0 0 0 0))
-(define input-3 '(2 5 5 2 5 5 2 5 5 2 5 5))
-(define input-4 '(2 5 5 2 5 5 1 1 1 3 5))
-(define input-5 '(2 5 6 5 0 1 1 1))
+(try input)
 
-;(try input)
-;(try input-0)
-;(try input-1)
-;(try input-2)
-;(try input-3)
-;(try input-4)
-(try input-5)
