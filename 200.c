@@ -8,21 +8,21 @@ char test[4][5] = {
   {'0', '0', '1', '0', '1'}
 };
 
-void fill(char **grid, int **visited, int row, int col, int i, int j)
+void dfs(char **grid, int **visited, int row, int col, int i, int j)
 {
   visited[i][j] = 1;
 
   if (i + 1 < row && grid[i + 1][j] == '1' && !visited[i + 1][j]) {
-    fill(grid, visited, row, col, i + 1, j);
+    dfs(grid, visited, row, col, i + 1, j);
   }
   if (i + 1 < row && j + 1 < col && grid[i + 1][j + 1] == '1' && !visited[i + 1][j + 1]) {
-    fill(grid, visited, row, col, i + 1, j + 1);
+    dfs(grid, visited, row, col, i + 1, j + 1);
   }
   if (i - 1 >= 0 && grid[i - 1][j] == '1' && !visited[i - 1][j]) {
-    fill(grid, visited, row, col, i - 1, j);
+    dfs(grid, visited, row, col, i - 1, j);
   }
   if (i - 1 >= 0 && j - 1 >= 0 && grid[i - 1][j - 1] == '1' && !visited[i - 1][j - 1]) {
-    fill(grid, visited, row, col, i - 1, j - 1);
+    dfs(grid, visited, row, col, i - 1, j - 1);
   }
 }
 
@@ -47,7 +47,7 @@ int numIslands(char **grid, int gridRowSize, int gridColSize)
   for (i = 0; i < gridRowSize; i++) {
     for (j = 0; j < gridColSize; j++) {
       if (grid[i][j] == '1' && !visited[i][j]) {
-        fill(grid, visited, gridRowSize, gridColSize, i, j);
+        dfs(grid, visited, gridRowSize, gridColSize, i, j);
         count++;
       }
     }
